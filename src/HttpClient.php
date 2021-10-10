@@ -7,6 +7,8 @@ class HttpClient {
     private $ch;
     private $res;
     private $apiClient;
+    private $data;
+
     public function __construct(ApiClient $apiClient){
         $this->url = $apiClient->getUrl();
         $this->apiClient = $apiClient;
@@ -21,6 +23,10 @@ class HttpClient {
 
     public function display(){
         echo $this->res;
+    }
+
+    public function getData(){
+        return $this->res;
     }
 
     public function __destruct()
@@ -49,14 +55,18 @@ class CountryLayerAPI implements ApiClient {
             $this->res = curl_exec($ch);
             $arr = json_decode($this->res, true);
             $slice = array_slice($arr, 0,15);
-            $this->res = json_encode($slice);
-            file_put_contents(__DIR__ . '/CLcache.txt', $this->res);
-            return $this->res;
+            $this->data = json_encode($slice);
+            file_put_contents(__DIR__ . '/CLcache.txt', $this->data);
+            return $this->data;
         }
         return $data;
     }
 
     public function getUrl(){
         return $this->url;
+    }
+
+    public function getData() {
+        return $this->res;
     }
 }
