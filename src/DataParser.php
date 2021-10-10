@@ -73,19 +73,27 @@ class XMLParser implements Parser {
 }
 
 class CSVParser implements Parser {
-
+    private $json_data;
+    private $data;
+    private $csv;
+    public function __construct($json_data){
+        $this->json_data = $json_data;
+        $this->data = json_decode($this->json_data);
+    }
     public function parse()
     {
-
+        foreach($this->data as $country){
+            $this->csv .= $country->name.','.$country->capital."\n";
+        }
     }
 
     public function write()
     {
-        // TODO: Implement write() method.
+        file_put_contents(__DIR__ .'/CSVData.csv', $this->csv);
     }
 
     public function getData()
     {
-        // TODO: Implement getData() method.
+        return $this->csv;
     }
 }
